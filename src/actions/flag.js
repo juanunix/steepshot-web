@@ -3,8 +3,6 @@ import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {debounce} from 'lodash';
 import {updatePost} from './post';
-import {getUserProfile} from './profile';
-import {updateVotingPower} from './auth';
 
 function toggleFlagRequest(postIndex) {
   return {
@@ -40,7 +38,7 @@ export function toggleFlag(postIndex) {
       return;
     }
     let queue = sessionStorage.getItem('voteQueue');
-    if (queue === 'true')  {
+    if (queue === "true")  {
       return;
     }
     sessionStorage.setItem('voteQueue', 'true');
@@ -59,7 +57,6 @@ export function toggleFlag(postIndex) {
       } else if (success) {
         dispatch(toggleFlagSuccess(postIndex));
         dispatch(updatePost(postIndex));
-        dispatch(updateVotingPower(username));
         let text = `The post has been successfully flaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
         if (!newFlagState) text = `The post has been successfully unflaged. If you don't see your flag, please give it a few minutes to sync from the blockchain`;
         jqApp.pushMessage.open(text);

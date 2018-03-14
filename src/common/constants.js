@@ -1,7 +1,7 @@
 export default {
     URLS: {
-        baseUrl_v1_1: 'https://steepshot.org/api/v1_1',
-        baseUrl_v1: 'https://steepshot.org/api/v1',
+        baseUrl_v1_1: 'https://qa.steepshot.org/api/v1_1',
+        baseUrl_v1: 'https://qa.steepshot.org/api/v1',
     },
     CATEGORIES: {
         user: 'user',
@@ -181,7 +181,5 @@ export default {
     POST_DESRIPTION_MAXLENGTH : 120,
     POST_LIKED_BY : 'Post has been rated by these users',
 
-    WAIT_FINISHING_TRANSACTION: 'There\'s unfinished transaction, please wait',
-
-    MAX_TAGS_NUMBER: 'You have reached the max number of tags.'
+    WAIT_FINISHING_TRANSACTION: 'There\'s unfinished transaction, please wait'
 }

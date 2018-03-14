@@ -36,7 +36,10 @@ class Settings extends React.Component {
         this.setState({
             settings: userSettings
         });
-        documentTitle();
+    }
+
+    componentWillMount() {
+      documentTitle();
     }
 
     _setDefaultMessageOptions() {

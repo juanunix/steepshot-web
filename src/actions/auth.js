@@ -1,10 +1,19 @@
 import {browserHistory} from 'react-router';
 import fakeAuth from '../components/Routes/fakeAuth';
+import constants from '../common/constants';
 import steem from 'steem';
 import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {logLogin} from './logging';
-import {getUserProfile} from './profile';
+
+const baseUrl = constants.URLS.baseUrl_v1;
+
+function getUrl() {
+  if (getStore().getState().auth.user){
+    return baseUrl + '/' + getStore().getState().auth.user
+  }
+    return baseUrl;
+}
 
 export function login(username, postingKey, history, dispatch, callback) {
   const account = null;
@@ -69,24 +78,16 @@ export function login(username, postingKey, history, dispatch, callback) {
         welcomeName = metadata.profile.name;
       }
 
-      let settings = {
-        [Constants.SETTINGS.show_low_rated]: false,
-        [Constants.SETTINGS.show_nsfw]: false
-      };
-      getUserProfile(username).then((result) => {
-        callback('Welcome to Steepshot, ' + welcomeName + '!');
-        dispatch({
-          type: 'LOGIN_SUCCESS',
-          postingKey: postingKey,
-          user: username,
-          avatar: avatar,
-          settings: settings,
-          voting_power: result.voting_power
-        });
-        setTimeout(function () {
-          fakeAuth.authenticate(() => history.push('/feed'));
-        }, 1);
+      callback('Welcome to Steepshot, ' +  welcomeName + '!');
+      dispatch({
+        type: 'LOGIN_SUCCESS',
+        postingKey: postingKey,
+        user: username,
+        avatar: avatar
       });
+      setTimeout(function() {
+        fakeAuth.authenticate(() => history.push('/feed'));
+      }, 1);
     }
   });
 }
@@ -111,17 +112,6 @@ export function logout(history) {
     localStorage.removeItem('avatar');
     dispatch(logoutUser());
     fakeAuth.signout(() => history.push(`/browse/${baseBrowseFilter()}`));
-  }
-}
-
-export function updateVotingPower(username) {
-  return (dispatch) => {
-    getUserProfile(username).then((result) => {
-      dispatch({
-        type: 'UPDATE_VOTING_POWER',
-        voting_power: result.voting_power
-      })
-    });
   }
 }
 
