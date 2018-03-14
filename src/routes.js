@@ -8,14 +8,13 @@ import PrivateRoute from './components/Routes/PrivateRoute';
 import Feed from './components/Feed/Feed';
 import Profile from './components/Profile';
 import Settings from './components/Settings';
-import CreatePost from './components/Posts/CreatePost';
 import AboutComponent from './components/About/AboutComponent';
 import BrowseWrapper from './components/Wrappers/BrowseWrapper';
 import Constants from './common/constants';
 import Testing from './components/Common/Testing/Testing';
 import SinglePost from './components/SinglePost/SinglePost';
 import Search from './components/Search/Search';
-import EditPost from "./components/EditPost/EditPost";
+import EditPost from './components/EditPost/EditPost';
 
 export default function getRoutes(store) {
   const clearMessages = () => {
@@ -56,7 +55,7 @@ export default function getRoutes(store) {
         <Route path="/guide" component={AboutComponent} onLeave={clearMessages} />
         <Route path="/dev/test" component={Testing} onLeave={clearMessages} />
         <PrivateRoute path="/feed" component={Feed} onLeave={clearMessages} />
-        <PrivateRoute path="/createPost" component={CreatePost} onLeave={clearMessages} />
+        <Redirect path="/createPost"  to={'/editPost'} />
         <PrivateRoute path="/editPost/:category?/:username?/:postId?" component={EditPost} onLeave={clearMessages} />
         <PrivateRoute path="/profile" component={Profile} onLeave={clearMessages} />
         <PrivateRoute path="/settings" component={Settings} onLeave={clearMessages} />
