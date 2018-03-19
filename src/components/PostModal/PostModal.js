@@ -23,6 +23,7 @@ import Likes from '../PostsList/Post/Likes/Likes';
 import FullScreenButtons from './FullScreenButtons/FullScreenButtons';
 import utils from '../../utils/utils';
 import {toggleVote} from '../../actions/vote';
+import './postModal.css';
 
 const START_TEXTAREA_HEIGHT = '42px';
 const HEADER_HEIGHT = 60;
