@@ -3,8 +3,8 @@ import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {debounce} from 'lodash';
 import {updatePost} from './post';
-import {getUserProfile} from './profile';
 import {updateVotingPower} from './auth';
+import jqApp from "../libs/app.min";
 
 function toggleVoteRequest(postIndex) {
   return {
@@ -42,7 +42,7 @@ export function toggleVote(postIndex) {
     }
 
     let queue = sessionStorage.getItem('voteQueue');
-    if (queue == 'true') {
+    if (queue === 'true') {
       return;
     }
 
@@ -54,7 +54,7 @@ export function toggleVote(postIndex) {
       if (err) {
         dispatch(toggleVoteFailure(postIndex));
         let text = 'Something went wrong when you voted, please, try again later';
-        if (err.data.code == 10) {
+        if (err.data.code === 10) {
           text = `Sorry, you had used the maximum number of vote changes on this post`;
         }
         jqApp.pushMessage.open(text);

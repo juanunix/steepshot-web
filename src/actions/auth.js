@@ -1,13 +1,10 @@
-import {browserHistory} from 'react-router';
 import fakeAuth from '../components/Routes/fakeAuth';
 import steem from 'steem';
-import {getStore} from '../store/configureStore';
 import Constants from '../common/constants';
 import {logLogin} from './logging';
 import {getUserProfile} from './profile';
 
 export function login(username, postingKey, history, dispatch, callback) {
-  const account = null;
 
   steem.api.getAccounts([username], function(err, result) {
     if (err) {
@@ -19,7 +16,7 @@ export function login(username, postingKey, history, dispatch, callback) {
       logLogin(data);
       return false;
     }
-    if (result.length == 0) {
+    if (result.length === 0) {
       callback('Such user doesn\'t exist');
       return false;
     }
@@ -54,11 +51,11 @@ export function login(username, postingKey, history, dispatch, callback) {
       }));
       let avatar = null;
       if (result[0])
-      if (result[0].json_metadata != "" && result[0].json_metadata != undefined) {
+      if (result[0].json_metadata !== "" && result[0].json_metadata !== undefined) {
          metadata = JSON.parse(result[0].json_metadata);
          if (metadata.profile)
-         if (metadata.profile.profile_image != "" && metadata.profile.profile_image != undefined) {
-           avatar = metadata.profile.profile_image;
+         if (metadata.profile['profile_image'] !== "" && metadata.profile['profile_image'] !== undefined) {
+           avatar = metadata.profile['profile_image'];
          }
       }
       localStorage.setItem('avatar', JSON.stringify(avatar));
@@ -107,7 +104,7 @@ export function login(username, postingKey, history, dispatch, callback) {
 }
 
 function baseBrowseFilter() {
-  return baseBrowseFilter = localStorage.getItem('browse') == undefined ?
+  return localStorage.getItem('browse') === undefined ?
     Constants.BROWSE_ROUTES[0].NAME : localStorage.getItem('browse');
 }
 
@@ -146,102 +143,4 @@ export function clearVPTimeout(vpTimeout) {
       vpTimeout: vpTimeout
     })
   }
-}
-
-export function updateProfile(state, token) {
-  return (dispatch) => {
-    dispatch({
-      type: 'CLEAR_MESSAGES'
-    });
-    return fetch('/account', {
-      method: 'put',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        email: state.email,
-        name: state.name,
-        gender: state.gender,
-        location: state.location,
-        website: state.website
-      })
-    }).then((response) => {
-      if (response.ok) {
-        return response.json().then((json) => {
-          dispatch({
-            type: 'UPDATE_PROFILE_SUCCESS',
-            messages: [json]
-          });
-        });
-      } else {
-        return response.json().then((json) => {
-          dispatch({
-            type: 'UPDATE_PROFILE_FAILURE',
-            messages: Array.isArray(json) ? json : [json]
-          });
-        });
-      }
-    });
-  };
-}
-
-export function changePassword(password, confirm, token) {
-  return (dispatch) => {
-    dispatch({
-      type: 'CLEAR_MESSAGES'
-    });
-    return fetch('/account', {
-      method: 'put',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        password: password,
-        confirm: confirm
-      })
-    }).then((response) => {
-      if (response.ok) {
-        return response.json().then((json) => {
-          dispatch({
-            type: 'CHANGE_PASSWORD_SUCCESS',
-            messages: [json]
-          });
-        });
-      } else {
-        return response.json().then((json) => {
-          dispatch({
-            type: 'CHANGE_PASSWORD_FAILURE',
-            messages: Array.isArray(json) ? json : [json]
-          });
-        });
-      }
-    });
-  };
-}
-
-export function deleteAccount(token) {
-  return (dispatch) => {
-    dispatch({
-      type: 'CLEAR_MESSAGES'
-    });
-    return fetch('/account', {
-      method: 'delete',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    }).then((response) => {
-      if (response.ok) {
-        return response.json().then((json) => {
-          dispatch(logout());
-          dispatch({
-            type: 'DELETE_ACCOUNT_SUCCESS',
-            messages: [json]
-          });
-        });
-      }
-    });
-  };
 }

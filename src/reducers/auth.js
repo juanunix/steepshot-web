@@ -1,8 +1,8 @@
 const initialState = {
-  user: JSON.parse(localStorage.getItem('user')) || null,
-  postingKey: JSON.parse(localStorage.getItem('postingKey')) || null,
-  settings: JSON.parse(localStorage.getItem('settings')) || null,
-  avatar: JSON.parse(localStorage.getItem('avatar')) || null,
+  user: JSON.parse(global.localStorage.getItem('user')) || null,
+  postingKey: JSON.parse(global.localStorage.getItem('postingKey')) || null,
+  settings: JSON.parse(global.localStorage.getItem('settings')) || null,
+  avatar: JSON.parse(global.localStorage.getItem('avatar')) || null,
   voting_power: null
 };
 
@@ -26,10 +26,10 @@ export default function auth(state = initialState, action) {
     case 'LOGOUT_SUCCESS':
       return {
         ...state,
-        user: JSON.parse(localStorage.getItem('user')) || null,
-        postingKey: JSON.parse(localStorage.getItem('postingKey')) || null,
-        settings: JSON.parse(localStorage.getItem('settings')) || null,
-        avatar: JSON.parse(localStorage.getItem('avatar')) || null,
+        user: JSON.parse(global.localStorage.getItem('user')) || null,
+        postingKey: JSON.parse(global.localStorage.getItem('postingKey')) || null,
+        settings: JSON.parse(global.localStorage.getItem('settings')) || null,
+        avatar: JSON.parse(global.localStorage.getItem('avatar')) || null,
         voting_power: null
       };
 
