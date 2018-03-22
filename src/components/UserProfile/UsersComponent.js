@@ -6,7 +6,7 @@ import Constants from '../../common/constants';
 import InfiniteScroll from 'react-infinite-scroller';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import {debounce} from 'lodash';
-import {documentTitle} from '../DocumentTitle';
+import {documentTitle} from '../../utils/documentTitle';
 
 class UsersComponent extends React.Component {
   constructor(props) {

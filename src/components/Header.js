@@ -4,21 +4,14 @@ import {connect} from 'react-redux';
 import {logout} from '../actions/auth';
 import Constants from '../common/constants';
 import Avatar from './Common/Avatar/Avatar';
-import {updateVotingPower, clearVPTimeout} from '../actions/auth';
-import $ from 'jquery';
+import {updateVotingPower} from '../actions/auth';
 import jqApp from "../libs/app.min";
+import {setSearchValue} from "../actions/header";
 
 class Header extends React.Component {
-	constructor() {
-		super();
-		this.state = {
-			searchValue: '',
-			sizeParam: false,
-		};
-	}
 
 	baseBrowseFilter() {
-		const baseBrowseFilter = localStorage.getItem('browse') === undefined
+		const baseBrowseFilter = !localStorage.getItem('browse')
 			? Constants.BROWSE_ROUTES[0].NAME
 			: localStorage.getItem('browse');
 		return baseBrowseFilter;
@@ -32,30 +25,13 @@ class Header extends React.Component {
 		}
 	}
 
-	componentDidMount() {
-		if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).addClass('active');
-		this.votingPowerUpdater();
-	}
-
-	componentWillMount() {
-		this.forResize();
-	}
-
 	votingPowerUpdater() {
-		if (this.props.user && this.props.postingKey) {
+		if (this.props.isUserAuth) {
 			let clearTimeout = setInterval(() => {
 				this.props.updateVotingPower(this.props.user);
 			}, 30000);
-			this.props.updateVotingPower(this.props.user);
-			this.props.clearVPTimeout(clearTimeout);
+			this.props.updateVotingPower(this.props.user, clearTimeout);
 		}
-	}
-
-	shouldComponentUpdate(nextProps) {
-		if (this.refs[this.props.location.pathname]) $(this.refs[this.props.location.pathname]).removeClass('active');
-		if (this.refs[nextProps.location.pathname]) $(this.refs[nextProps.location.pathname]).addClass('active');
-
-		return true;
 	}
 
 	handleLogout(event) {
@@ -67,26 +43,21 @@ class Header extends React.Component {
 	searchKeyPress(e) {
 		if (e.key === 'Enter') {
 			e.preventDefault();
-			this.props.history.push(`/search/${this.state.searchValue}`);
+			this.props.history.push(`/search/${this.props.searchValue}`);
 		}
 	}
 
 	searchHandleChange(e) {
 		let value = e.target.value.toLowerCase();
-		this.setState({searchValue: value.replace(/[^\w-.]/g, '')});
-	}
-
-	forResize() {
-		if (document.body.clientWidth < 420) {
-			this.setState({sizeParam: true});
-		}
+		value = value.replace(/[^\w-.]/g, '');
+		this.props.setSearchValue(value);
 	}
 
 	render() {
-		const isUserAuth = this.props.user && this.props.postingKey;
+		const {user, isUserAuth, avatar: avatar, sizeParam} = this.props;
 		let browse;
 		let authorLink = '';
-		let authorImage = this.props.avatar || Constants.NO_AVATAR;
+		let authorImage = avatar || Constants.NO_AVATAR;
 		let loginComponent = <div className="section login">
 			<div className="wrap-login">
 				<Link to="/signin" className="btn btn-default btn-xs">
@@ -96,7 +67,7 @@ class Header extends React.Component {
 		</div>;
 
 		if (isUserAuth) {
-			authorLink = `/@${this.props.user}`;
+			authorLink = `/@${user}`;
 			loginComponent = <div className="section controls">
 				<div className="wrap-controls">
 					<Link to="/settings" className="btn-control settings"/>
@@ -160,7 +131,7 @@ class Header extends React.Component {
 							</div>
 							<div className="section user">
 								{
-									this.props.user
+									user
 										? <Link to={authorLink} className="user-link clearfix">
 											<div className="photo">
 												<Avatar src={authorImage}
@@ -168,7 +139,7 @@ class Header extends React.Component {
 																headerAvatar={true}
 												/>
 											</div>
-											<div className="name">{this.props.user}</div>
+											<div className="name">{user}</div>
 										</Link>
 										: null
 								}
@@ -190,18 +161,18 @@ class Header extends React.Component {
 					<div className="search-panel closed">
 						<div className="wrap-panel container clearfix">
 							<div className="wrap-btn">
-								<button type="button" className="btn-close" onClick={() => {this.setState({searchValue: ''}) }}/>
+								<button type="button" className="btn-close" onClick={() => {this.props.setSearchValue('')}}/>
 							</div>
 							<div className="wrap-search">
 								<form className="form-search">
 									<input
 										type="text"
 										name="search"
-										value={this.state.searchValue}
+										value={this.props.searchValue}
 										onChange={this.searchHandleChange.bind(this)}
 										required={true}
 										placeholder={
-											this.state.sizeParam
+											sizeParam
 												? Constants.SEARCH_PLACEHOLDER_MIN
 												: Constants.SEARCH_PLACEHOLDER
 										}
@@ -223,22 +194,25 @@ const mapDispatchToProps = (dispatch) => {
 		logout: (history) => {
 			dispatch(logout(history))
 		},
-		updateVotingPower: (username) => {
-			dispatch(updateVotingPower(username));
+		updateVotingPower: (username, vpTimeout) => {
+			dispatch(updateVotingPower(username, vpTimeout));
 		},
-		clearVPTimeout: (vpTimeout) => {
-			dispatch(clearVPTimeout(vpTimeout));
+		setSearchValue: (searchValue) => {
+			dispatch(setSearchValue(searchValue))
 		}
 	}
 };
 
 const mapStateToProps = (state) => {
+	const user = state.auth.user;
 	return {
-		postingKey: state.auth.postingKey,
-		user: state.auth.user,
+		user,
+		isUserAuth: state.auth.postingKey && user,
 		avatar: state.auth.avatar,
 		localization: state.localization,
-		vpTimeout: state.auth.vpTimeout
+		vpTimeout: state.auth.vpTimeout,
+		sizeParam: document.body.clientWidth < 420,
+		searchValue: state.header.searchValue
 	};
 };
 

@@ -3,7 +3,7 @@ import {
   connect
 } from 'react-redux';
 import Constants from '../../common/constants';
-import { documentTitle } from '../DocumentTitle';
+import { documentTitle } from '../../utils/documentTitle';
 import PostsList from '../PostsList/PostsList';
 
 class Feed extends React.Component {

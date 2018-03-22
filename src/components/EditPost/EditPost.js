@@ -8,7 +8,7 @@ import ShowIf from "../Common/ShowIf";
 import utils from "../../utils/utils";
 import Constants from "../../common/constants";
 import LoadingSpinner from "../LoadingSpinner";
-import {documentTitle} from "../../components/DocumentTitle";
+import {documentTitle} from "../../utils/documentTitle";
 import Timer from "../Common/Timer/Timer";
 import './editPost.css';
 

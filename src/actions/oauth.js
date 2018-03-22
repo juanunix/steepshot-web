@@ -121,30 +121,6 @@ export function link(provider) {
       }
   }
 }
-
-// Unlink account
-export function unlink(provider) {
-  return (dispatch) => {
-    return fetch('/unlink/' + provider).then((response) => {
-      if (response.ok) {
-        return response.json().then((json) => {
-          dispatch({
-            type: 'UNLINK_SUCCESS',
-            messages: [json]
-          });
-        });
-      } else {
-        return response.json().then((json) => {
-          dispatch({
-            type: 'UNLINK_FAILURE',
-            messages: [json]
-          });
-        });
-      }
-    });
-  }
-}
-
 function oauth2(config, dispatch) {
   return new Promise((resolve, reject) => {
     const params = {

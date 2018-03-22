@@ -7,7 +7,7 @@ import {
     connect
 } from 'react-redux';
 import Constants from '../../common/constants';
-import { documentTitle } from '../DocumentTitle';
+import { documentTitle } from '../../utils/documentTitle';
 import jqApp from "../../libs/app.min";
 
 class Settings extends React.Component {

@@ -2,7 +2,7 @@ import React from 'react';
 import Constants from '../../common/constants';
 import PostsList from '../PostsList/PostsList';
 import {getUsersSearch} from '../../services/posts';
-import {documentTitle} from '../DocumentTitle';
+import {documentTitle} from '../../utils/documentTitle';
 import {insertCategory} from '../../utils/search';
 import UsersList from '../UsersList/UsersList';
 import TabsBar from "../Common/TabsBar/TabsBar";

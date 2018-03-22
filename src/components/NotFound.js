@@ -1,5 +1,5 @@
 import React from 'react'
-import {documentTitle} from './DocumentTitle';
+import {documentTitle} from '../utils/documentTitle';
 
 class NotFound extends React.Component {
 

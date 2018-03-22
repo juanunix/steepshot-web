@@ -14,6 +14,7 @@ import users from './users';
 import bodyParams from './bodyParams';
 import editPost from "./editPost";
 import textInput from "./textInput";
+import header from "./header";
 
 export default combineReducers({
   clipboard,
@@ -29,5 +30,6 @@ export default combineReducers({
   bodyParams,
   likesFlagsList,
   editPost,
-  textInput
+  textInput,
+	header
 });

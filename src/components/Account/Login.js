@@ -11,7 +11,7 @@ import {
 } from '../../actions/oauth';
 import LoadingSpinner from '../LoadingSpinner';
 import Constants from '../../common/constants';
-import {documentTitle} from '../DocumentTitle';
+import {documentTitle} from '../../utils/documentTitle';
 import ShowIf from '../Common/ShowIf';
 import $ from 'jquery';
 import jqApp from "../../libs/app.min";

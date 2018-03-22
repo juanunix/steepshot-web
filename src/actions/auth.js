@@ -82,19 +82,17 @@ export function login(username, postingKey, history, dispatch, callback) {
         getUserProfile(username).then((result) => {
           dispatch({
             type: 'UPDATE_VOTING_POWER',
-            voting_power: result.voting_power
+            voting_power: result.voting_power,
+						vpTimeout: clearTimeout
           })
         });
       }, 30000);
       getUserProfile(username).then((result) => {
         dispatch({
           type: 'UPDATE_VOTING_POWER',
-          voting_power: result.voting_power
+          voting_power: result.voting_power,
+					vpTimeout: clearTimeout
         })
-      });
-      dispatch({
-        type: 'VOTING_POWER_TIMEOUT',
-        vpTimeout: clearTimeout
       });
       setTimeout(function () {
         fakeAuth.authenticate(() => history.push('/feed'));
@@ -125,22 +123,14 @@ export function logout(history) {
   }
 }
 
-export function updateVotingPower(username) {
+export function updateVotingPower(username, vpTimeout) {
   return (dispatch) => {
     getUserProfile(username).then((result) => {
       dispatch({
         type: 'UPDATE_VOTING_POWER',
-        voting_power: result.voting_power
+        voting_power: result.voting_power,
+				vpTimeout: vpTimeout
       })
     });
-  }
-}
-
-export function clearVPTimeout(vpTimeout) {
-  return (dispatch) => {
-    dispatch({
-      type: 'VOTING_POWER_TIMEOUT',
-      vpTimeout: vpTimeout
-    })
   }
 }

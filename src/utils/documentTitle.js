@@ -1,5 +1,10 @@
+import utils from './utils';
+
 export function documentTitle() {
 	let title = window.location.pathname.replace('/', '');
+	if (utils.isEmptyString(title)) {
+		return;
+	}
 	if (title === 'signin') {
 		title = 'sign in';
 	}

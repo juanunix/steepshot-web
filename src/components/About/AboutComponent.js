@@ -1,6 +1,6 @@
 import React from 'react';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
-import { documentTitle } from '../DocumentTitle';
+import { documentTitle } from '../../utils/documentTitle';
 import {connect} from "react-redux";
 
 class AboutComponent extends React.Component {
