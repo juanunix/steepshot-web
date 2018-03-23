@@ -9,12 +9,6 @@ export function initPostsList(options) {
   };
 }
 
-export function clearPostsList() {
-  return {
-    type: 'CLEAR_POSTS'
-  };
-}
-
 function getPostsListRequest(point) {
   return {
     type: 'GET_POSTS_LIST_REQUEST',
@@ -44,7 +38,7 @@ export function getPostsList(point) {
       point
     }
   }
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(getPostsListRequest(point));
     let userSettings = getStore().getState().auth.settings;
     const requestOptions = {
@@ -59,7 +53,7 @@ export function getPostsList(point) {
         ...statePoint.options
       }
     };
-    getPosts(requestOptions, statePoint.cancelPrevious).then((response) => {
+    await getPosts(requestOptions, statePoint.cancelPrevious).then((response) => {
       let newPosts = response.results;
       let hasMore = newPosts.length === LIMIT;
       newPosts = removeDuplicate(newPosts);

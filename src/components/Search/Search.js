@@ -44,19 +44,21 @@ class Search extends React.Component {
              loading={this.props.hotPostsList.loading || this.props.newPostsList.loading}
              empty={!this.props.newPostsList.posts.length}>
           <PostsList
-            point={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
+						params={{
+							point: insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue),
+							options: {limit: 4},
+							maxPosts: 4
+						}}
             wrapperModifier="posts-list clearfix"
-            cancelPrevious={false}
-            options={{limit: 4}}
-            maxPosts={4}
             headerText={hotPost}
             isComponentVisible={this.props.activeIndex === 0}
           />
           <ShowIf show={this.props.newPostsList.posts.length >= 4} removeFromDom={false}>
             <PostsList
-              point={insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, this.props.searchValue)}
+							params={{
+								point: insertCategory(Constants.POSTS_FILTERS.POSTS_NEW.point, this.props.searchValue)
+							}}
               wrapperModifier="posts-list clearfix"
-              cancelPrevious={false}
               ignored={insertCategory(Constants.POSTS_FILTERS.POSTS_HOT.point, this.props.searchValue)}
               headerText={newPost}
               isComponentVisible={this.props.activeIndex === 0}

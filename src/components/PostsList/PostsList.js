@@ -8,6 +8,7 @@ import LoadingSpinner from '../LoadingSpinner';
 import Post from './Post/Post';
 import HeadingLeadComponent from '../Atoms/HeadingLeadComponent';
 import './postsList.css';
+import {withWrapper} from "create-react-server/wrapper";
 
 class PostsList extends React.Component {
   static defaultProps = {
@@ -17,26 +18,6 @@ class PostsList extends React.Component {
     isComponentVisible: true,
     headerText: ''
   };
-
-  constructor(props) {
-    super(props);
-    let postsListOptions = {
-      point: this.props.point,
-      cancelPrevious: this.props.cancelPrevious,
-      options: this.props.options,
-      maxPosts: this.props.maxPosts,
-      loading: false,
-      posts: [],
-      length: 0,
-      hasMore: true,
-      loader: true
-    };
-    this.props.initPostsList(postsListOptions);
-  }
-
-  componentDidMount() {
-    this.props.getPosts(this.props.point);
-  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.point !== this.props.point) {
@@ -95,6 +76,12 @@ class PostsList extends React.Component {
   }
 
   render() {
+		if (this.props.posts) {
+			console.log(this.props.posts);
+		} else {
+			console.log('undefined');
+		}
+		console.log("__________________");
     return (
       <div className={this.props.className}>
         {this.renderHeader()}
@@ -134,4 +121,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostsList);
+export default withWrapper(connect(mapStateToProps, mapDispatchToProps)(PostsList));

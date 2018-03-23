@@ -7,10 +7,11 @@ import rootReducer from '../reducers'
 let storeBase;
 
 export default function configureStore(initialState) {
+	const init = initialState || {};
   const logger = createLogger();
   const store = createStore(
     rootReducer,
-    initialState,
+		init,
     applyMiddleware(thunk, promise, logger)
   );
   setStoreBase(store);

@@ -191,7 +191,9 @@ class UserProfile extends React.Component {
                       activeTab={this.state.activeItemIndex}
                     >
                       <PostsList
-                        point={this.state.itemsPoint}
+												params={{
+													point: this.state.itemsPoint
+												}}
                         className="posts-list clearfix type-2"
                         wrapperModifier="clearfix"
                         clearPostHeader={true}
@@ -201,11 +203,11 @@ class UserProfile extends React.Component {
                         className="posts-list clearfix type-2"
                         getUsers={getFollowers}
                       />
-                      <UsersList
-                        point={this.state.followingPoint}
-                        className="posts-list clearfix type-2"
-                        getUsers={getFollowing}
-                      />
+                      {/*<UsersList*/}
+                        {/*point={this.state.followingPoint}*/}
+                        {/*className="posts-list clearfix type-2"*/}
+                        {/*getUsers={getFollowing}*/}
+                      {/*/>*/}
                     </TabsWrapper>
                 }
               </div>

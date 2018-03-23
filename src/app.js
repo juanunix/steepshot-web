@@ -14,9 +14,7 @@ export function getHistory() {
 }
 
 export default ({state, props}) => {
-
 	const store = configureStore(state);
-
 	return (
 		<Provider store={store}>
 			<WrapperProvider initialProps={props}>

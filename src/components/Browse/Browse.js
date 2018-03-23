@@ -10,10 +10,37 @@ import Constants from '../../common/constants';
 import TabsWrapper from '../Wrappers/TabsWrapper';
 import {documentTitle} from '../../utils/documentTitle';
 import PostsList from '../PostsList/PostsList';
+import {withWrapper} from "create-react-server/wrapper";
+import {getPostsList, initPostsList} from "../../actions/postsList";
 
 class Browse extends React.Component {
+
+	static async getInitialProps({location, query, params, store}) {
+
+		let postsListOptions = {
+			point: Constants.POSTS_FILTERS.POSTS_TOP.point,
+			cancelPrevious: false,
+			options: {},
+			maxPosts: 9999,
+			loading: false,
+			posts: [],
+			length: 0,
+			hasMore: true,
+			loader: true
+		};
+		await store.dispatch(initPostsList(postsListOptions));
+		postsListOptions = {...postsListOptions, point: Constants.POSTS_FILTERS.POSTS_NEW.point};
+		await store.dispatch(initPostsList(postsListOptions));
+		postsListOptions = {...postsListOptions, point: Constants.POSTS_FILTERS.POSTS_HOT.point};
+		await store.dispatch(initPostsList(postsListOptions));
+		await store.dispatch(getPostsList(Constants.POSTS_FILTERS.POSTS_TOP.point));
+		await store.dispatch(getPostsList(Constants.POSTS_FILTERS.POSTS_NEW.point));
+		await store.dispatch(getPostsList(Constants.POSTS_FILTERS.POSTS_HOT.point));
+		return store.getState();
+	};
+
   constructor(props) {
-    super(props);
+    super();
 
     this.state = {
       keys : [
@@ -21,7 +48,7 @@ class Browse extends React.Component {
         { label : Constants.POSTS_FILTERS.POSTS_NEW.label },
         { label : Constants.POSTS_FILTERS.POSTS_TOP.label }
       ],
-      activeItemIndex : this.props.activeItemIndex
+      activeItemIndex : props.activeItemIndex
     };
   }
 
@@ -50,6 +77,9 @@ class Browse extends React.Component {
   }
 
   render() {
+		if (this.props.initialLoading) {
+			return null;
+		}
     return (
       <div className="g-main_i container">
         <div id="workspace" className="g-content clearfix">
@@ -84,9 +114,10 @@ class Browse extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return {
-    localization: state.localization
-  };
+	return {
+		...state.postsList[Constants.POSTS_FILTERS.POSTS_HOT.point],
+		localization: state.localization
+	};
 };
 
-export default withRouter(connect(mapStateToProps)(Browse));
+export default withWrapper(withRouter(connect(mapStateToProps)(Browse)));

@@ -5,6 +5,7 @@ import {
 import Constants from '../../common/constants';
 import { documentTitle } from '../../utils/documentTitle';
 import PostsList from '../PostsList/PostsList';
+import {insertCategory} from "../../utils/search";
 
 class Feed extends React.Component {
   constructor(props) {
@@ -24,8 +25,9 @@ class Feed extends React.Component {
       <div className="g-main_i container">
         <div id="workspace" className="g-content clearfix">
           <PostsList
-            point={this.state.point}
-            cancelPrevious={false}
+						params={{
+							point: this.state.point
+						}}
             wrapperModifier="posts-list clearfix"
           />
         </div>
