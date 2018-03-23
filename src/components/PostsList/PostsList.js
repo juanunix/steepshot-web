@@ -76,12 +76,6 @@ class PostsList extends React.Component {
   }
 
   render() {
-		if (this.props.posts) {
-			console.log(this.props.posts);
-		} else {
-			console.log('undefined');
-		}
-		console.log("__________________");
     return (
       <div className={this.props.className}>
         {this.renderHeader()}
