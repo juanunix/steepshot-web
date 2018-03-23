@@ -11,27 +11,7 @@ import {setSearchValue} from "../actions/header";
 class Header extends React.Component {
 
 	baseBrowseFilter() {
-		const baseBrowseFilter = !localStorage.getItem('browse')
-			? Constants.BROWSE_ROUTES[0].NAME
-			: localStorage.getItem('browse');
-		return baseBrowseFilter;
-	}
-
-	scrollTopAndReload() {
-		if (window.location.pathname === '/feed') {
-			window.location.reload();
-		} else if (/\/browse\/\w+/.test(window.location.pathname)) {
-			window.location.reload();
-		}
-	}
-
-	votingPowerUpdater() {
-		if (this.props.isUserAuth) {
-			let clearTimeout = setInterval(() => {
-				this.props.updateVotingPower(this.props.user);
-			}, 30000);
-			this.props.updateVotingPower(this.props.user, clearTimeout);
-		}
+		return localStorage.getItem('browse') || Constants.BROWSE_ROUTES[0].NAME;
 	}
 
 	handleLogout(event) {
@@ -81,14 +61,12 @@ class Header extends React.Component {
 			<div className="wrap-menu">
 				{
 					(isUserAuth) ? (
-						<div className="item nav-item"
-								 onClick={this.scrollTopAndReload.bind(this)}>
+						<div className="item nav-item">
 							<Link to="/feed">Feed</Link>
 						</div>
 					) : null
 				}
-				<div className="item nav-item"
-						 onClick={this.scrollTopAndReload.bind(this)}>
+				<div className="item nav-item">
 					<Link to={`/browse/${this.baseBrowseFilter()}`}>Browse</Link>
 				</div>
 			</div>
@@ -131,7 +109,7 @@ class Header extends React.Component {
 							</div>
 							<div className="section user">
 								{
-									user
+									isUserAuth
 										? <Link to={authorLink} className="user-link clearfix">
 											<div className="photo">
 												<Avatar src={authorImage}

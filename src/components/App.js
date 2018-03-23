@@ -8,7 +8,7 @@ import Modals from './Modals/Modals';
 const App = ({children}) => (
   <div className="g-wrap">
     <div className="outer-bg">
-      <Header/>
+      {/*<Header/>*/}
       <div className="g-main">
         {children || 'Loading'}
       </div>
